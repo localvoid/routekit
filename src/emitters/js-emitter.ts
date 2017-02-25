@@ -1,10 +1,10 @@
 import { Emitter } from "../emitter";
 import { Routes } from "../routes";
-import { toCompact } from "../tree/compact";
-import { toFast } from "../tree/fast";
-import { jsEmitCompactTree, jsEmitFastTree, jsEmitReverseMap } from "./utils";
+import { CompactNode, toCompact } from "../tree/compact";
+import { FastNode, toFast } from "../tree/fast";
 
 export interface JSEmitterOptions {
+    target?: "es6" | "ts";
     mode?: "browser" | "server";
     header?: string;
     footer?: string;
@@ -12,7 +12,7 @@ export interface JSEmitterOptions {
     reverseFunctions?: boolean;
     reverseMap?: boolean;
     reverseMapName?: string;
-    disableESLint?: boolean;
+    disableLint?: boolean;
 }
 
 export class JSEmitter implements Emitter {
@@ -20,6 +20,7 @@ export class JSEmitter implements Emitter {
 
     constructor(options?: JSEmitterOptions) {
         this.options = {
+            target: "es6",
             mode: "browser",
             header: "",
             footer: "",
@@ -27,7 +28,7 @@ export class JSEmitter implements Emitter {
             reverseFunctions: true,
             reverseMap: true,
             reverseMapName: "REVERSE",
-            disableESLint: true,
+            disableLint: true,
             ...options,
         };
     }
@@ -60,7 +61,7 @@ export class JSEmitter implements Emitter {
                         }
                         const s = p.slice(1);
                         cpath.push(s);
-                        params.push(s);
+                        params.push(emitParam(this.options.target!, s));
                     } else if (p[0] === "*") {
                         if (currentStatic) {
                             cpath.push(`"${currentStatic}"`);
@@ -68,7 +69,7 @@ export class JSEmitter implements Emitter {
                         }
                         const s = p.slice(1);
                         catchAllParam = s;
-                        params.push(s);
+                        params.push(emitParam(this.options.target!, s));
                     } else {
                         currentStatic += p;
                     }
@@ -94,8 +95,12 @@ export class JSEmitter implements Emitter {
         }
 
         let output = "";
-        if (this.options.disableESLint) {
-            output += "/* eslint-disable */\n";
+        if (this.options.disableLint) {
+            if (this.options.target === "es6") {
+                output += "/* eslint-disable */\n";
+            } else if (this.options.target === "ts") {
+                output += "/* tslint:disable */\n";
+            }
         }
         output += "/**\n";
         output += " * DO NOT MODIFY!\n";
@@ -107,7 +112,14 @@ export class JSEmitter implements Emitter {
         }
         output += routesOut;
         if (this.options.reverseFunctions) {
-            output += "\n\n" + reverseFunctions.join("\n\n") + "\n";
+            if (this.options.target === "ts") {
+                output += "\n\n";
+                output += "export interface Stringifiable {\n";
+                output += "  toString(): string;\n";
+                output += "}";
+            }
+            output += "\n\n";
+            output += reverseFunctions.join("\n\n") + "\n";
             if (this.options.reverseMap) {
                 output += `\nexport const ${this.options.reverseMapName} = ${jsEmitReverseMap(routes.reverse)};\n`;
             }
@@ -118,4 +130,123 @@ export class JSEmitter implements Emitter {
 
         return output;
     }
+}
+
+export function jsEmitCompactTree(n: CompactNode<any>, depth = 0): string {
+    const props = [];
+    props.push(`${indent(depth + 1)}f: ${n.flags}`);
+    if (n.path) {
+        props.push(`${indent(depth + 1)}p: "${n.path}"`);
+    }
+    if (n.children) {
+        if (Array.isArray(n.children)) {
+            props.push(`${indent(depth + 1)}c: [` +
+                `${n.children.map((c) => jsEmitCompactTree(c, depth + 1)).join(", ")}]`);
+        } else {
+            props.push(`${indent(depth + 1)}c: ${jsEmitCompactTree(n.children, depth + 1)}`);
+        }
+    }
+    if (n.data) {
+        props.push(`${indent(depth + 1)}d: ${n.data}`);
+    }
+
+    let out = "";
+    out += "{\n";
+    out += props.join(",\n") + "\n";
+    out += indent(depth) + "}";
+
+    return out;
+}
+
+export function jsEmitFastTree(n: FastNode<any>, depth = 0): string {
+    const props = [];
+    switch (n.type) {
+        case "s":
+            props.push(`${indent(depth + 1)}type: 0`);
+            break;
+        case "?":
+            props.push(`${indent(depth + 1)}type: 1`);
+            break;
+    }
+    props.push(`${indent(depth + 1)}match: ${n.match}`);
+    props.push(`${indent(depth + 1)}catchAll: ${n.catchAll}`);
+    props.push(`${indent(depth + 1)}path: "${n.path}"`);
+    if (n.staticIndices) {
+        props.push(`${indent(depth + 1)}staticIndices: ${JSON.stringify(n.staticIndices.map((i) => i.charCodeAt(0)))}`);
+    } else {
+        props.push(`${indent(depth + 1)}staticIndices: null`);
+    }
+    if (n.staticChildren) {
+        props.push(`${indent(depth + 1)}staticChildren: [`
+            + `${n.staticChildren.map((c) => jsEmitFastTree(c, depth + 1)).join(", ")}]`);
+    } else {
+        props.push(`${indent(depth + 1)}staticChildren: null`);
+    }
+    if (n.paramChild) {
+        props.push(`${indent(depth + 1)}paramChild: ${jsEmitFastTree(n.paramChild, depth + 1)}`);
+    } else {
+        props.push(`${indent(depth + 1)}paramChild: null`);
+    }
+    if (n.data) {
+        const data = [
+            valueOrNull(n.data.connect),
+            valueOrNull(n.data.delete),
+            valueOrNull(n.data.get),
+            valueOrNull(n.data.head),
+            valueOrNull(n.data.options),
+            valueOrNull(n.data.patch),
+            valueOrNull(n.data.post),
+            valueOrNull(n.data.put),
+            valueOrNull(n.data.trace),
+        ];
+        while (data.length && data[data.length - 1] === null) {
+            data.pop();
+        }
+        let dataOut = "[\n";
+        for (let d of data) {
+            dataOut += `${indent(depth + 2)}${d},\n`;
+        }
+        dataOut += `${indent(depth + 1)}]`;
+
+        props.push(`${indent(depth + 1)}data: ${dataOut}`);
+    } else {
+        props.push(`${indent(depth + 1)}data: null`);
+    }
+
+    let out = "";
+    out += "{\n";
+    out += props.join(",\n") + "\n";
+    out += indent(depth) + "}";
+
+    return out;
+}
+
+export function jsEmitReverseMap(reverse: Map<string, string[]>): string {
+    return "{\n" + Array.from(reverse.keys()).map((n) => `  "${n}": ${n}`).join(",\n") + "\n}";
+}
+
+const _indentStrings: string[] = [];
+
+function indent(n: number): string {
+    if (n < _indentStrings.length) {
+        return _indentStrings[n];
+    }
+
+    let s = "";
+    while (n-- > 0) {
+        s += "  ";
+    }
+
+    return _indentStrings[n] = s;
+}
+
+function valueOrNull<T>(value: T | undefined): T | null {
+    return value === undefined ? null : value;
+}
+
+function emitParam(target: "es6" | "ts", p: string): string {
+    if (target === "es6") {
+        return p;
+    }
+    return `${p}: Stringifiable`;
 }

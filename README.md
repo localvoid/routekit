@@ -112,8 +112,7 @@ interface Routes {
 
 ### Emmiter
 
-Emitter generates programming code from `Routes` object. Right now, there are two emitters available: `JSEmitter` and
-`TSEmitter`.
+Emitter generates programming code from `Routes` object.
 
 #### JSEmitter
 
@@ -121,6 +120,7 @@ JSEmitter produces compact trees that can be used by resolvers that are working 
 
 ```ts
 interface JSEmitterOptions {
+    target?: "es6" | "ts";
     mode?: "browser" | "server";
     header?: string;
     footer?: string;
@@ -128,23 +128,7 @@ interface JSEmitterOptions {
     reverseFunctions?: boolean;
     reverseMap?: boolean;
     reverseMapName?: string;
-    disableESLint?: boolean;
-}
-```
-
-#### TSEmitter
-
-TSEmitter produces compact trees that can be used by resolvers that are working in browser environments.
-
-```ts
-interface TSEmitterOptions {
-    header?: string;
-    footer?: string;
-    routesName?: string;
-    reverseFunctions?: boolean;
-    reverseMap?: boolean;
-    reverseMapName?: string;
-    disableTSLint?: boolean;
+    disableLint?: boolean;
 }
 ```
 
