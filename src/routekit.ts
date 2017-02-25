@@ -1,7 +1,7 @@
 export { HttpMethod } from "./http";
 export { Node, NodeData, NodeType } from "./tree/node";
 export { CompactNode, CompactNodeFlags, toCompact } from "./tree/compact";
-export { FastNode, FastNodeType, toFast } from "./tree/fast";
+export { FastNode, toFast } from "./tree/fast";
 export { Routes } from "./routes";
 export { Emitter } from "./emitter";
 

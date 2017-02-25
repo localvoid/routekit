@@ -121,6 +121,7 @@ JSEmitter produces compact trees that can be used by resolvers that are working 
 
 ```ts
 interface JSEmitterOptions {
+    mode?: "browser" | "server";
     header?: string;
     footer?: string;
     routesName?: string;

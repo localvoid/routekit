@@ -1,9 +1,11 @@
 import { Emitter } from "../emitter";
 import { Routes } from "../routes";
 import { toCompact } from "../tree/compact";
-import { jsEmitCompactTree, jsEmitReverseMap } from "./utils";
+import { toFast } from "../tree/fast";
+import { jsEmitCompactTree, jsEmitFastTree, jsEmitReverseMap } from "./utils";
 
 export interface JSEmitterOptions {
+    mode?: "browser" | "server";
     header?: string;
     footer?: string;
     routesName?: string;
@@ -18,6 +20,7 @@ export class JSEmitter implements Emitter {
 
     constructor(options?: JSEmitterOptions) {
         this.options = {
+            mode: "browser",
             header: "",
             footer: "",
             routesName: "ROUTES",
@@ -30,8 +33,16 @@ export class JSEmitter implements Emitter {
     }
 
     emit(routes: Routes): string {
-        const compactTree = toCompact(routes.root);
-        const routesOut = `export const ${this.options.routesName} = ${jsEmitCompactTree(compactTree)};`;
+        let routesOut = "";
+
+        switch (this.options.mode) {
+            case "browser":
+                routesOut = `export const ${this.options.routesName} = ${jsEmitCompactTree(toCompact(routes.root))};`;
+                break;
+            case "server":
+                routesOut = `export const ${this.options.routesName} = ${jsEmitFastTree(toFast(routes.root))};`;
+                break;
+        }
 
         let reverseFunctions: string[] = [];
         if (this.options.reverseFunctions) {
