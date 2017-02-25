@@ -1,13 +1,15 @@
 import { Emitter } from "../emitter";
 import { Routes } from "../routes";
 import { toCompact } from "../tree/compact";
-import { jsEmitCompactTree } from "./utils";
+import { jsEmitCompactTree, jsEmitReverseMap } from "./utils";
 
 export interface JSEmitterOptions {
     header?: string;
     footer?: string;
     routesName?: string;
     reverseFunctions?: boolean;
+    reverseMap?: boolean;
+    reverseMapName?: string;
     disableESLint?: boolean;
 }
 
@@ -20,6 +22,8 @@ export class JSEmitter implements Emitter {
             footer: "",
             routesName: "ROUTES",
             reverseFunctions: true,
+            reverseMap: true,
+            reverseMapName: "REVERSE",
             disableESLint: true,
             ...options,
         };
@@ -93,6 +97,9 @@ export class JSEmitter implements Emitter {
         output += routesOut;
         if (this.options.reverseFunctions) {
             output += "\n\n" + reverseFunctions.join("\n\n") + "\n";
+            if (this.options.reverseMap) {
+                output += `\nexport const ${this.options.reverseMapName} = ${jsEmitReverseMap(routes.reverse)}\n`;
+            }
         }
         if (this.options.footer) {
             output += "\n" + this.options.footer;

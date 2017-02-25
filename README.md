@@ -118,6 +118,8 @@ interface JSEmitterOptions {
     footer?: string;
     routesName?: string;
     reverseFunctions?: boolean;
+    reverseMap?: boolean;
+    reverseMapName?: string;
     disableESLint?: boolean;
 }
 ```
@@ -132,6 +134,8 @@ interface TSEmitterOptions {
     footer?: string;
     routesName?: string;
     reverseFunctions?: boolean;
+    reverseMap?: boolean;
+    reverseMapName?: string;
     disableTSLint?: boolean;
 }
 ```

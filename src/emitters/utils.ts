@@ -40,3 +40,7 @@ export function jsEmitCompactTree(n: CompactNode<any>, depth = 0): string {
 
     return out;
 }
+
+export function jsEmitReverseMap(reverse: Map<string, string[]>): string {
+    return "{\n" + Array.from(reverse.keys()).map((n) => `  "${n}": ${n}`).join(",\n") + "\n}";
+}
