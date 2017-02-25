@@ -1,12 +1,7 @@
-import { Node, NodeData } from "./node";
-
-export const enum FastNodeType {
-    Static = 0,
-    Param = 1,
-}
+import { Node, NodeData, NodeType } from "./node";
 
 export class FastNode<T> {
-    type: FastNodeType;
+    type: NodeType;
     match: boolean;
     catchAll: boolean;
     path: string;
@@ -16,7 +11,7 @@ export class FastNode<T> {
     data: NodeData<T> | null;
 
     constructor(
-        type: FastNodeType,
+        type: NodeType,
         match: boolean,
         catchAll: boolean,
         path: string,
@@ -37,18 +32,6 @@ export class FastNode<T> {
 }
 
 export function toFast<T>(node: Node<T>): FastNode<T> {
-    let type = 0;
-    switch (node.type) {
-        case "s":
-            type = FastNodeType.Static;
-            break;
-        case "?":
-            type = FastNodeType.Param;
-            break;
-        default:
-            throw new Error(`Invalid node type "${node.type}".`);
-    }
-
     const staticChildren = node.getStaticChildren();
     const paramChild = node.getParamChild();
 
@@ -57,7 +40,7 @@ export function toFast<T>(node: Node<T>): FastNode<T> {
     const newParamChild = paramChild ? toFast(paramChild) : null;
 
     return new FastNode<T>(
-        type,
+        node.type,
         node.match,
         node.catchAll,
         node.path,
