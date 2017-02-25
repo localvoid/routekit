@@ -1,0 +1,54 @@
+{
+    "name": "routekit",
+    "main": "dist/js/routekit.js",
+    "typings": "dist/typings/routekit.d.ts",
+    "bin": {
+        "routekit": "bin/routekit.js"
+    },
+    "version": "0.0.1",
+    "description": "RouteKit is a set of tools for generating efficient routers.",
+    "license": "MIT",
+    "author": {
+        "name": "Boris Kaul",
+        "email": "localvoid@gmail.com",
+        "url": "https://github.com/localvoid"
+    },
+    "keywords": [
+        "routekit",
+        "router",
+        "compiler",
+        "typescript"
+    ],
+    "homepage": "https://github.com/localvoid/routekit",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/localvoid/routekit"
+    },
+    "bugs": {
+        "url": "https://github.com/localvoid/routekit/issues"
+    },
+    "github": "https://github.com/localvoid/routekit",
+    "files": [
+        "bin",
+        "dist",
+        "README.md",
+        "LICENSE"
+    ],
+    "scripts": {
+        "dist": "tsc",
+        "watch": "tsc --watch",
+        "lint": "tslint --project ./tsconfig.json"
+    },
+    "dependencies": {
+        "commander": "^2.9.0",
+        "mkdirp": "^0.5.1",
+        "resolve": "^1.3.1",
+        "tslib": "^1.6.0"
+    },
+    "devDependencies": {
+        "@types/node": "^7.0.5",
+        "ivi-tslint-rules": "^0.1.0",
+        "tslint": "^4.4.2",
+        "typescript": "^2.2.0"
+    }
+}
