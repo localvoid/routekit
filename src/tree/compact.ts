@@ -1,12 +1,13 @@
 import { Node, NodeData } from "./node";
 
 export const enum CompactNodeFlags {
-    Static = 1,
-    Param = 1 << 1,
-    CatchAll = 1 << 2,
+    Match = 1,
+    Static = 1 << 1,
+    Param = 1 << 2,
     HasStaticChild = 1 << 3,
     HasParamChild = 1 << 4,
     SingleChild = 1 << 5,
+    CatchAll = 1 << 6,
 }
 
 export class CompactNode<T> {
@@ -40,6 +41,10 @@ export function toCompact<T>(node: Node<T>, httpMethod: keyof NodeData<T> = "get
         flags |= CompactNodeFlags.Param;
     } else {
         throw new Error(`Invalid node type "${node.type}".`);
+    }
+
+    if (node.match) {
+        flags |= CompactNodeFlags.Match;
     }
 
     if (node.catchAll) {

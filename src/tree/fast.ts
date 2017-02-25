@@ -7,6 +7,7 @@ export const enum FastNodeType {
 
 export class FastNode<T> {
     type: FastNodeType;
+    match: boolean;
     catchAll: boolean;
     path: string;
     staticIndices: string[] | null;
@@ -16,6 +17,7 @@ export class FastNode<T> {
 
     constructor(
         type: FastNodeType,
+        match: boolean,
         catchAll: boolean,
         path: string,
         staticIndices: string[] | null,
@@ -24,6 +26,7 @@ export class FastNode<T> {
         data: NodeData<T> | null,
     ) {
         this.type = type;
+        this.match = match;
         this.catchAll = catchAll;
         this.path = path;
         this.staticIndices = staticIndices;
@@ -55,6 +58,7 @@ export function toFast<T>(node: Node<T>): FastNode<T> {
 
     return new FastNode<T>(
         type,
+        node.match,
         node.catchAll,
         node.path,
         newStaticIndices,

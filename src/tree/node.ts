@@ -21,6 +21,7 @@ export interface NodeData<T> {
 export class Node<T> {
     type: NodeType;
     path: string;
+    match: boolean;
     catchAll: boolean;
     children: Node<T>[];
     data: NodeData<T>;
@@ -29,6 +30,7 @@ export class Node<T> {
     constructor(type: NodeType, path: string = "") {
         this.type = type;
         this.path = path;
+        this.match = false;
         this.catchAll = false;
         this.children = [];
         this.data = {};
@@ -63,12 +65,14 @@ export class Node<T> {
             if (l < nl) {
                 // split
                 const c = new Node<T>("s", cn.path.slice(l));
+                c.match = cn.match;
                 c.catchAll = cn.catchAll;
                 c.children = cn.children;
                 c.data = cn.data;
                 c.meta = cn.meta;
 
                 cn.path = cn.path.slice(0, l);
+                cn.match = false;
                 cn.catchAll = false;
                 cn.children = [c];
                 cn.data = {};
@@ -163,5 +167,9 @@ export class Node<T> {
         if (method & HttpMethod.TRACE) {
             this.data.trace = value;
         }
+    }
+
+    setMatch(): void {
+        this.match = true;
     }
 }

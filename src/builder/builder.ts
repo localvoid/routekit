@@ -97,6 +97,7 @@ export class Builder<T> implements Routes {
         if (meta !== undefined) {
             n.setMeta(meta);
         }
+        n.setMatch();
 
         this.reverse.set(name, reverse);
     }
