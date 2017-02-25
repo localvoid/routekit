@@ -138,6 +138,7 @@ GOEmitter produces fast trees that can be used by resolvers that are working on 
 
 ```ts
 export interface GOEmitterOptions {
+    modulePath?: string;
     header?: string;
     footer?: string;
     routesName?: string;
