@@ -3,7 +3,7 @@
 ## Installation
 
 ```sh
-$ npm install routekit
+$ npm install -g routekit
 ```
 
 ## Usage Example
@@ -44,19 +44,19 @@ And it will generate `routes.js` file
  */
 
 export const ROUTES = {
-  f: 41,
+  f: 43,
   p: "/",
   c: {
-    f: 49,
+    f: 50,
     p: "user/",
     c: {
-      f: 42,
+      f: 45,
       c: {
-        f: 1,
+        f: 3,
         p: "/edit",
-        d: {"location":"user/view"}
+        d: {"location":"user/edit"}
       },
-      d: {"location":"user/edit"}
+      d: {"location":"user/view"}
     }
   },
   d: {"location":"home"}
@@ -73,6 +73,12 @@ export function userEdit(id) {
 export function home() {
   return "/";
 }
+
+export const REVERSE = {
+  "userView": userView,
+  "userEdit": userEdit,
+  "home": home
+};
 ```
 
 It contains compact radix tree and a set of functions that can be used to generate urls.

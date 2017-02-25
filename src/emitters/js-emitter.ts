@@ -98,7 +98,7 @@ export class JSEmitter implements Emitter {
         if (this.options.reverseFunctions) {
             output += "\n\n" + reverseFunctions.join("\n\n") + "\n";
             if (this.options.reverseMap) {
-                output += `\nexport const ${this.options.reverseMapName} = ${jsEmitReverseMap(routes.reverse)}\n`;
+                output += `\nexport const ${this.options.reverseMapName} = ${jsEmitReverseMap(routes.reverse)};\n`;
             }
         }
         if (this.options.footer) {
