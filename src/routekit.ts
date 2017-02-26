@@ -10,4 +10,3 @@ export { Builder, noopTransformer } from "./builder/builder";
 export {
     JSEmitter, JSEmitterOptions, jsEmitCompactTree, jsEmitFastTree, jsEmitReverseMap,
 } from "./emitters/js-emitter";
-export { GOEmitter } from "./emitters/go-emitter";

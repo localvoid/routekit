@@ -141,22 +141,6 @@ interface JSEmitterOptions {
 }
 ```
 
-#### GOEmitter
-
-GOEmitter generates fast trees that can be used by resolvers that are working on server.
-
-```ts
-export interface GOEmitterOptions {
-    modulePath?: string;
-    header?: string;
-    footer?: string;
-    routesName?: string;
-    reverseFunctions?: boolean;
-    reverseMap?: boolean;
-    reverseMapName?: string;
-}
-```
-
 ### Resolver
 
 Resolver is a function that uses generated tree to find a match for an url.
