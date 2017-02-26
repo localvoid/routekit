@@ -40,10 +40,10 @@ export class Node<T> {
     pushStatic(path: string): Node<T> {
         let cn: Node<T> = this;
         if (this.type !== "s") {
-            const c = this.findStaticChildByLabel(path[0]);
+            const c = cn.findStaticChildByLabel(path[0]);
             if (c === undefined) {
                 const n = new Node<T>("s", path);
-                this.children.push(n);
+                cn.children.push(n);
                 return n;
             }
 
@@ -56,39 +56,39 @@ export class Node<T> {
             const nl = cn.path.length;
             const sl = s.length;
             const max = Math.max(nl, sl);
-            let l = 0;
+            let i = 0;
 
-            while (l < max && cn.path.charCodeAt(l) === s.charCodeAt(l)) {
-                l++;
+            while (i < max && cn.path.charCodeAt(i) === s.charCodeAt(i)) {
+                i++;
             }
 
-            if (l < nl) {
+            if (i < nl) {
                 // split
-                const c = new Node<T>("s", cn.path.slice(l));
+                const c = new Node<T>("s", cn.path.slice(i));
                 c.match = cn.match;
                 c.catchAll = cn.catchAll;
                 c.children = cn.children;
                 c.data = cn.data;
                 c.meta = cn.meta;
 
-                cn.path = cn.path.slice(0, l);
+                cn.path = cn.path.slice(0, i);
                 cn.match = false;
                 cn.catchAll = false;
                 cn.children = [c];
                 cn.data = {};
                 cn.meta = null;
 
-                if (sl === l) {
+                if (sl === i) {
                     return cn;
                 }
 
-                const n = new Node<T>("s", s.slice(l));
+                const n = new Node<T>("s", s.slice(i));
                 cn.children.push(n);
                 return n;
-            } else if (l < sl) {
+            } else if (i < sl) {
                 // next node
-                s = s.slice(l);
-                const c = this.findStaticChildByLabel(s[0]);
+                s = s.slice(i);
+                const c = cn.findStaticChildByLabel(s[0]);
                 if (c === undefined) {
                     const n = new Node<T>("s", s);
                     cn.children.push(n);

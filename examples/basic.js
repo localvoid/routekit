@@ -11,6 +11,6 @@ r("userEdit", "/user/:id/edit", { location: "user/edit" });
 r("home", "/", { location: "home" });
 
 module.exports = {
-    emitter: new routekit.GOEmitter(),
+    emitter: new routekit.JSEmitter(),
     routes: routes,
 };
