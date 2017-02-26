@@ -1,5 +1,13 @@
 [RouteKit](https://github.com/localvoid/routekit) is a set of tools for generating efficient routers.
 
+## Motivation
+
+It seems that nowadays everyone is so obsessed with things like TTI :) By precompiling route tables, we can slightly
+reduce startup time of our web applications.
+
+And as a side effect, reverse urls are also way much more efficient, especially with UI libraries that are using virtual
+dom diffing, because of inlining and constant folding.
+
 ## Installation
 
 ```sh
@@ -116,7 +124,8 @@ Emitter generates programming code from `Routes` object.
 
 #### JSEmitter
 
-JSEmitter produces compact trees that can be used by resolvers that are working in browser environments.
+JSEmitter generates compact trees in "browser" mode and fast trees in "server" mode. It also supports emitting types for
+TypeScript.
 
 ```ts
 interface JSEmitterOptions {
@@ -134,7 +143,7 @@ interface JSEmitterOptions {
 
 #### GOEmitter
 
-GOEmitter produces fast trees that can be used by resolvers that are working on server.
+GOEmitter generates fast trees that can be used by resolvers that are working on server.
 
 ```ts
 export interface GOEmitterOptions {
