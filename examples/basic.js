@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const routekit = require("routekit");
 
 const routes = new routekit.Builder();
@@ -10,7 +12,5 @@ r("userView", "/user/:id", { location: "user/view" });
 r("userEdit", "/user/:id/edit", { location: "user/edit" });
 r("home", "/", { location: "home" });
 
-module.exports = {
-    emitter: new routekit.JSEmitter(),
-    routes: routes,
-};
+const e = new routekit.JSEmitter();
+console.log(e.emit(routes));

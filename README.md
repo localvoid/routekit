@@ -11,16 +11,20 @@ dom diffing, because of inlining and constant folding.
 ## Installation
 
 ```sh
-$ npm install -g routekit
+$ npm install -D routekit
 ```
 
 ## Usage Example
 
-Create configuration file: `routes.config.js`
+Create a routes file: `routes.build.js`
 
 ```js
+#!/usr/bin/env node
+
 const routekit = require("routekit");
+
 const routes = new routekit.Builder();
+
 function r(name, path, data) {
     routes.add(name, path, routekit.HttpMethod.GET, JSON.stringify(data));
 }
@@ -29,16 +33,14 @@ r("userView", "/user/:id", { location: "user/view" });
 r("userEdit", "/user/:id/edit", { location: "user/edit" });
 r("home", "/", { location: "home" });
 
-module.exports = {
-    emitter: new routekit.JSEmitter(),
-    routes: routes,
-};
+const e = new routekit.JSEmitter();
+console.log(e.emit(routes));
 ```
 
-Run `routekit` CLI application
+Run `routes.build.js` file
 
 ```sh
-$ routekit -c routes.config.js -o routes.js
+$ node routes.build.js
 ```
 
 And it will generate `routes.js` file
