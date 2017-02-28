@@ -1,5 +1,4 @@
 import { Routes } from "./routes";
 
-export interface Emitter {
-    emit(routes: Routes): string;
-}
+export type Emitter = (routes: Routes) => string;
+

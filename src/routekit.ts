@@ -8,5 +8,5 @@ export { Emitter } from "./emitter";
 export { Builder, noopTransformer } from "./builder/builder";
 
 export {
-    JSEmitter, JSEmitterOptions, jsEmitCompactTree, jsEmitFastTree, jsEmitReverseMap,
+    jsEmitter, JSEmitterOptions, jsEmitCompactTree, jsEmitFastTree, jsEmitReverseMap,
 } from "./emitters/js-emitter";

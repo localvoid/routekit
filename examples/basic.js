@@ -12,5 +12,4 @@ r("userView", "/user/:id", { location: "user/view" });
 r("userEdit", "/user/:id/edit", { location: "user/edit" });
 r("home", "/", { location: "home" });
 
-const e = new routekit.JSEmitter();
-console.log(e.emit(routes));
+console.log(routekit.jsEmitter()(routes));
