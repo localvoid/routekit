@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "outDir": "dist/cjs",
+    "declaration": false,
+    "sourceMap": true,
+    "importHelpers": true,
+    "noEmitHelpers": true,
+    "removeComments": false,
+    "types": [
+      "node",
+      "mocha"
+    ],
+    "lib": [
+      "es2016",
+      "es2015"
+    ],
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true
+  },
+  "include": [
+    "src/**/*.ts",
+    "__tests__/**/*.ts"
+  ]
+}

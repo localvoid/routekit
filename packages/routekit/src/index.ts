@@ -6,7 +6,3 @@ export { Routes } from "./routes";
 export { Emitter } from "./emitter";
 
 export { Builder, noopTransformer } from "./builder/builder";
-
-export {
-    jsEmitter, JSEmitterOptions, jsEmitCompactTree, jsEmitFastTree, jsEmitReverseMap,
-} from "./emitters/js-emitter";

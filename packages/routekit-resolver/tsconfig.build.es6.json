@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "outDir": "dist/es6",
+    "declarationDir": "dist/typings",
+    "declaration": true,
+    "sourceMap": true,
+    "importHelpers": true,
+    "noEmitHelpers": true,
+    "removeComments": false,
+    "types": [
+      "node"
+    ],
+    "lib": [
+      "es2016",
+      "es2015"
+    ],
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
+}
