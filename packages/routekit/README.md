@@ -81,8 +81,8 @@ radix tree.
 
 ```ts
 export class RouteBuilder<T> implements Routes {
-  add(name: string, path: string, method: HttpMethod, data?: T, meta?: any): void;
-  setData(path: string, method: HttpMethod, data?: T, meta?: any): void;
+  add(name: string, path: string, method: HttpMethod, data?: T): void;
+  setData(path: string, method: HttpMethod, data?: T): void;
 }
 ```
 

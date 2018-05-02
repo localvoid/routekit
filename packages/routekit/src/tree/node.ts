@@ -25,7 +25,6 @@ export class Node<T> {
   catchAll: boolean;
   children: Node<T>[];
   data: NodeData<T>;
-  meta: any;
 
   constructor(type: NodeType, path: string = "") {
     this.type = type;
@@ -34,7 +33,6 @@ export class Node<T> {
     this.catchAll = false;
     this.children = [];
     this.data = {};
-    this.meta = null;
   }
 
   pushStatic(path: string): Node<T> {
@@ -69,14 +67,12 @@ export class Node<T> {
         c.catchAll = cn.catchAll;
         c.children = cn.children;
         c.data = cn.data;
-        c.meta = cn.meta;
 
         cn.path = cn.path.slice(0, i);
         cn.match = false;
         cn.catchAll = false;
         cn.children = [c];
         cn.data = {};
-        cn.meta = null;
 
         if (sl === i) {
           return cn;
@@ -133,10 +129,6 @@ export class Node<T> {
 
   getStaticChildren(): Node<T>[] {
     return this.children.filter((c) => c.type === "s");
-  }
-
-  setMeta(meta: any): void {
-    this.meta = meta;
   }
 
   setData(method: HttpMethod, value: T): void {

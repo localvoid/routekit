@@ -23,19 +23,19 @@ export class Builder<T> implements Routes {
     this.paramNameTransformer = paramNameTransformer;
   }
 
-  add(name: string, path: string, method: HttpMethod, data?: T, meta?: any): void {
+  add(name: string, path: string, method: HttpMethod, data?: T): void {
     if (!name) {
       throw new Error("Invalid name, name parameter cannot be an empty string.");
     }
 
-    this._set(name, path, method, data, meta);
+    this._set(name, path, method, data);
   }
 
-  setData(path: string, method: HttpMethod, data?: T, meta?: any): void {
-    this._set("", path, method, data, meta);
+  setData(path: string, method: HttpMethod, data?: T): void {
+    this._set("", path, method, data);
   }
 
-  private _set(name: string, path: string, method: HttpMethod, data?: T, meta?: any): void {
+  private _set(name: string, path: string, method: HttpMethod, data?: T): void {
     name = this.reverseNameTransformer(name);
     const reverse = [] as string[];
 
@@ -101,9 +101,6 @@ export class Builder<T> implements Routes {
 
     if (data !== undefined) {
       n.setData(method, data);
-    }
-    if (meta !== undefined) {
-      n.setMeta(meta);
     }
     if (name) {
       n.setMatch();
