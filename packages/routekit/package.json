@@ -32,8 +32,13 @@
     "LICENSE"
   ],
   "scripts": {
-    "dist": "../../node_modules/.bin/tsc -p ./tsconfig.json",
-    "lint": "../../node_modules/.bin/tslint --project ./tsconfig.json"
+    "prepublish": "npm run clean && npm run dist",
+    "clean": "rm -rf ./dist",
+    "dist": "npm run dist:main",
+    "dist:main": "../../node_modules/.bin/tsc -p ./tsconfig.build.main.json",
+    "lint": "../../node_modules/.bin/tslint --project ./tsconfig.json",
+    "test": "../../node_modules/.bin/jest",
+    "test:coverage": "../../node_modules/.bin/jest --coverage"
   },
   "peerDependencies": {},
   "devDependencies": {}

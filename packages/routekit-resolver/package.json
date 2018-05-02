@@ -1,7 +1,8 @@
 {
   "name": "routekit-resolver",
-  "main": "dist/cjs/index.js",
-  "module": "dist/es6/index.js",
+  "main": "dist/node/index.js",
+  "module": "dist/es5/index.js",
+  "es2016": "dist/es2016/index.js",
   "typings": "dist/typings/index.d.ts",
   "version": "0.2.0",
   "description": "Basic RouteKit resolver for browser environments",
@@ -32,22 +33,16 @@
     "LICENSE"
   ],
   "scripts": {
-    "dist": "../../node_modules/.bin/tsc -p ./tsconfig.build.cjs.json && ../../node_modules/.bin/tsc -p ./tsconfig.build.es2015.json",
+    "prepublish": "npm run clean && npm run dist",
+    "clean": "rm -rf ./dist",
+    "dist": "npm run dist:main && npm run dist:module && npm run dist:es2016",
+    "dist:main": "../../node_modules/.bin/tsc -p ./tsconfig.build.main.json",
+    "dist:module": "../../node_modules/.bin/tsc -p ./tsconfig.build.module.json",
+    "dist:es2016": "../../node_modules/.bin/tsc -p ./tsconfig.build.es2016.json",
     "lint": "../../node_modules/.bin/tslint --project ./tsconfig.json",
     "test": "../../node_modules/.bin/jest",
     "test:coverage": "../../node_modules/.bin/jest --coverage"
   },
   "peerDependencies": {},
-  "devDependencies": {},
-  "jest": {
-    "transform": {
-      "^.+\\.tsx?$": "<rootDir>/../../node_modules/ts-jest/preprocessor.js"
-    },
-    "testRegex": "(/__tests__/.*\\.spec)\\.ts$",
-    "moduleFileExtensions": [
-      "ts",
-      "js",
-      "json"
-    ]
-  }
+  "devDependencies": {}
 }
