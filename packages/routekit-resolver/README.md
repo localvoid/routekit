@@ -2,7 +2,7 @@ Basic [RouteKit](https://github.com/localvoid/routekit) resolver for browser env
 
 ## Installation
 
-NPM package `routekit-resolver` provides es6 modules and TypeScript typings.
+NPM package `routekit-resolver` provides a commonjs, es2015 modules and TypeScript typings.
 
 ```sh
 npm install -D routekit-resolver
@@ -19,7 +19,7 @@ function merge(a, b) {
 }
 
 function match(path) {
-  return resolve(ROUTES, path, merge);
+  return resolve(ROUTES, merge, path, "");
 }
 
 match("/user/123");
@@ -29,21 +29,23 @@ match("/user/123");
 
 ```ts
 export interface ResolveResult<T> {
-  data?: T;
-  params?: string[];
+  readonly data: T;
+  readonly params: string[];
 }
 
-export function resolve<T>(
-  routes: RouteNode<T>,
+export function resolve<A, T>(
+  map: RouteMap<T>,
+  reducer: (a: A, b: T) => A,
   path: string,
-  merge: (a: T | undefined, b: T | undefined, node: RouteNode<T>) => T,
-): ResolveResult<T> | null;
+  data: A,
+): ResolveResult<A> | null;
 ```
 
-`resolve` function has 3 parameters:
+`resolve` function has 4 parameters:
 
-- `routes` is a reference to a routes tree.
+- `map` is a reference to a routes map.
+- `reducer` is a function that takes the previous state and a data, and returns the next state.
 - `path` is a path that should be resolved.
-- `merge` is a function that will be used to merge data.
+- `data` is a default state.
 
 When resolve function returns `null` value it means that no match was found.

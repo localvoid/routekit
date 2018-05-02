@@ -30,8 +30,7 @@ r("mix4", "/mix/static/:b", "mix4");
 
 r("home", "/", "home");
 
-process.stdout.write(
-  routekitJS.jsEmitter({
-    target: "ts",
-  })(routes),
-);
+const emitter = new routekitJS.JSEmitter(routes, { target: "ts" });
+
+process.stdout.write("/* tslint:disable */\n");
+process.stdout.write(emitter.emitRoutes());

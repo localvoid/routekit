@@ -126,8 +126,8 @@ function visitNode<A, T>(
 }
 
 export interface ResolveResult<T> {
-  data: T;
-  params: string[];
+  readonly data: T;
+  readonly params: string[];
 }
 
 export function resolve<A, T>(
