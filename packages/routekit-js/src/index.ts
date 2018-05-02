@@ -1,4 +1,4 @@
-import { Emitter, Routes, CompactNode, FastNode, toCompact, toFast } from "routekit";
+import { Emitter, Routes, FastNode, FlatTree, toFast, toFlat } from "routekit";
 
 export interface JSEmitterOptions {
   target?: "es6" | "ts";
@@ -31,14 +31,14 @@ export function jsEmitter(options?: JSEmitterOptions): Emitter {
 
     switch (o.mode) {
       case "browser":
-        routesOut = `export const ${o.routesName} = ${jsEmitCompactTree(toCompact(routes.root))};`;
+        routesOut = `export const ${o.routesName} = ${jsEmitFlatTree(toFlat(routes.root))};`;
         break;
       case "server":
         routesOut = `export const ${o.routesName} = ${jsEmitFastTree(toFast(routes.root))};`;
         break;
     }
 
-    let reverseFunctions: string[] = [];
+    const reverseFunctions: string[] = [];
     if (o.reverseFunctions) {
       routes.reverse.forEach((path, name) => {
         const params = [];
@@ -46,7 +46,7 @@ export function jsEmitter(options?: JSEmitterOptions): Emitter {
         let currentStatic = "";
         let catchAllParam = "";
 
-        for (let p of path) {
+        for (const p of path) {
           if (p[0] === "?") {
             if (currentStatic) {
               cpath.push(`"${currentStatic}"`);
@@ -125,28 +125,12 @@ export function jsEmitter(options?: JSEmitterOptions): Emitter {
   };
 }
 
-export function jsEmitCompactTree(n: CompactNode<any>, depth = 0): string {
-  const props = [];
-  props.push(`${indent(depth + 1)}f: ${n.flags}`);
-  if (n.path) {
-    props.push(`${indent(depth + 1)}p: "${n.path}"`);
-  }
-  if (n.children) {
-    if (Array.isArray(n.children)) {
-      props.push(`${indent(depth + 1)}c: [` +
-        `${n.children.map((c) => jsEmitCompactTree(c, depth + 1)).join(", ")}]`);
-    } else {
-      props.push(`${indent(depth + 1)}c: ${jsEmitCompactTree(n.children, depth + 1)}`);
-    }
-  }
-  if (n.data) {
-    props.push(`${indent(depth + 1)}d: ${n.data}`);
-  }
-
-  let out = "";
-  out += "{\n";
-  out += props.join(",\n") + "\n";
-  out += indent(depth) + "}";
+export function jsEmitFlatTree(tree: FlatTree<any>): string {
+  let out = "{\n";
+  out += "  f:" + JSON.stringify(tree.flags) + ",\n";
+  out += "  p:" + JSON.stringify(tree.paths) + ",\n";
+  out += "  d:[" + tree.data.join(",") + "],\n";
+  out += "}";
 
   return out;
 }
@@ -196,7 +180,7 @@ export function jsEmitFastTree(n: FastNode<any>, depth = 0): string {
       data.pop();
     }
     let dataOut = "[\n";
-    for (let d of data) {
+    for (const d of data) {
       dataOut += `${indent(depth + 2)}${d},\n`;
     }
     dataOut += `${indent(depth + 1)}]`;

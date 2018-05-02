@@ -7,28 +7,23 @@ function noopMerge(a: any, b: any) {
 }
 
 function mergeLocations(a: any, b: any) {
-  if (a === undefined) {
-    return ["start", b.location];
-  } else if (b === undefined) {
-    return a;
-  }
-  return a.concat(b.location);
+  return a.concat(b);
 }
 
 function notMatch(path: string) {
-  expect(resolve(ROUTES, path, noopMerge)).toBeNull();
+  expect(resolve(ROUTES, noopMerge, path, {})).toBeNull();
 }
 
 function match(path: string, location: string, params: string[] = []) {
-  const m = resolve(ROUTES, path, noopMerge);
+  const m = resolve(ROUTES, noopMerge, path, {});
   expect(m).notToBeNull();
   expect(m!.params!).toBeEqual(params);
-  expect(m!.data.location).toBe(location);
+  expect(m!.data).toBe(location);
   return m;
 }
 
 function matchAndMerge(path: string, location: string[]) {
-  const m = resolve(ROUTES, path, mergeLocations);
+  const m = resolve(ROUTES, mergeLocations, path, ["start"]);
   expect(m).notToBeNull();
   expect(m!.data! as string[]).toBeEqual(location);
 }
