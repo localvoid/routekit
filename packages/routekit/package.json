@@ -2,7 +2,7 @@
   "name": "routekit",
   "main": "dist/main/index.js",
   "typings": "dist/typings/index.d.ts",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "RouteKit is a set of tools for generating efficient routers",
   "license": "MIT",
   "author": {
@@ -39,7 +39,5 @@
     "lint": "../../node_modules/.bin/tslint --project ./tsconfig.json",
     "test": "../../node_modules/.bin/jest",
     "test:coverage": "../../node_modules/.bin/jest --coverage"
-  },
-  "peerDependencies": {},
-  "devDependencies": {}
+  }
 }

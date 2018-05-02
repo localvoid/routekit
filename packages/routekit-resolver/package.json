@@ -4,7 +4,7 @@
   "module": "dist/es5/index.js",
   "es2016": "dist/es2016/index.js",
   "typings": "dist/typings/index.d.ts",
-  "version": "0.2.0",
+  "version": "0.4.0",
   "description": "Basic RouteKit resolver for browser environments",
   "license": "MIT",
   "author": {
@@ -42,7 +42,5 @@
     "lint": "../../node_modules/.bin/tslint --project ./tsconfig.json",
     "test": "../../node_modules/.bin/jest",
     "test:coverage": "../../node_modules/.bin/jest --coverage"
-  },
-  "peerDependencies": {},
-  "devDependencies": {}
+  }
 }
