@@ -4,7 +4,7 @@
   "module": "dist/es5/index.js",
   "es2016": "dist/es2016/index.js",
   "typings": "dist/typings/index.d.ts",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Basic RouteKit resolver for browser environments",
   "license": "MIT",
   "author": {
