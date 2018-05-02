@@ -1,6 +1,6 @@
 {
   "name": "routekit",
-  "main": "dist/cjs/index.js",
+  "main": "dist/main/index.js",
   "typings": "dist/typings/index.d.ts",
   "version": "0.3.0",
   "description": "RouteKit is a set of tools for generating efficient routers",

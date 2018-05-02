@@ -1,6 +1,6 @@
 {
   "name": "routekit-resolver",
-  "main": "dist/node/index.js",
+  "main": "dist/main/index.js",
   "module": "dist/es5/index.js",
   "es2016": "dist/es2016/index.js",
   "typings": "dist/typings/index.d.ts",
