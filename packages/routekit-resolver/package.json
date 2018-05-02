@@ -34,8 +34,20 @@
   "scripts": {
     "dist": "../../node_modules/.bin/tsc -p ./tsconfig.build.cjs.json && ../../node_modules/.bin/tsc -p ./tsconfig.build.es2015.json",
     "lint": "../../node_modules/.bin/tslint --project ./tsconfig.json",
-    "test": "../../node_modules/.bin/mocha --reporter mocha-iko-reporter -r ../../node_modules/ts-node/register __tests__/index.ts"
+    "test": "../../node_modules/.bin/jest",
+    "test:coverage": "../../node_modules/.bin/jest --coverage"
   },
   "peerDependencies": {},
-  "devDependencies": {}
+  "devDependencies": {},
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "<rootDir>/../../node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*\\.spec)\\.ts$",
+    "moduleFileExtensions": [
+      "ts",
+      "js",
+      "json"
+    ]
+  }
 }
