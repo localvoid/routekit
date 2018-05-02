@@ -41,7 +41,10 @@
     "test:coverage": "../../node_modules/.bin/jest --coverage"
   },
   "peerDependencies": {
-    "routekit": "^0.3.0"
+    "routekit": "^0.4.0"
+  },
+  "dependencies": {
+    "incode": "^0.3.0"
   },
   "devDependencies": {
     "routekit": "^0.4.0"
