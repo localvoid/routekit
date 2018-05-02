@@ -105,12 +105,6 @@ export function jsEmitter(options?: JSEmitterOptions): Emitter {
     }
     output += routesOut;
     if (o.reverseFunctions) {
-      if (o.target === "ts") {
-        output += "\n\n";
-        output += "export interface Stringifiable {\n";
-        output += "  toString(): string;\n";
-        output += "}";
-      }
       output += "\n\n";
       output += reverseFunctions.join("\n\n") + "\n";
       if (o.reverseMap) {
@@ -225,5 +219,5 @@ function emitParam(target: "es6" | "ts", p: string): string {
   if (target === "es6") {
     return p;
   }
-  return `${p}: Stringifiable`;
+  return `${p}: any`;
 }
