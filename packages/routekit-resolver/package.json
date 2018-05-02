@@ -32,12 +32,10 @@
     "LICENSE"
   ],
   "scripts": {
-    "dist": "../../node_modules/.bin/tsc -p ./tsconfig.build.cjs.json && ../../node_modules/.bin/tsc -p ./tsconfig.build.es6.json",
+    "dist": "../../node_modules/.bin/tsc -p ./tsconfig.build.cjs.json && ../../node_modules/.bin/tsc -p ./tsconfig.build.es2015.json",
     "lint": "../../node_modules/.bin/tslint --project ./tsconfig.json",
     "test": "../../node_modules/.bin/mocha --reporter mocha-iko-reporter -r ../../node_modules/ts-node/register __tests__/index.ts"
   },
-  "peerDependencies": {
-    "tslib": "^1.7.1"
-  },
+  "peerDependencies": {},
   "devDependencies": {}
 }
