@@ -12,6 +12,8 @@
     "noEmitHelpers": true,
     "removeComments": false,
     "types": [
+      "es2016",
+      "es2015",
       "node"
     ]
   },

@@ -1,0 +1,30 @@
+{
+  "extends": "./tools/typescript/tsconfig.checks.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "target": "es2016",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "types": [
+      "es2015",
+      "es2016",
+      "dom",
+      "jest"
+    ],
+    "paths": {
+      "routekit": [
+        "packages/routekit/src"
+      ],
+      "routekit-js": [
+        "packages/routekit-js/src"
+      ],
+      "routekit-resolver": [
+        "packages/routekit-resolver/src"
+      ]
+    }
+  },
+  "include": [
+    "packages/*/src/**/*.ts",
+    "packages/**/__tests__/**/*.ts"
+  ]
+}
