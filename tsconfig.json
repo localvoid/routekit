@@ -5,10 +5,12 @@
     "target": "es2016",
     "module": "commonjs",
     "moduleResolution": "node",
-    "types": [
+    "lib": [
       "es2015",
-      "es2016",
-      "dom",
+      "es2016"
+    ],
+    "types": [
+      "node",
       "jest"
     ],
     "paths": {
@@ -25,6 +27,5 @@
   },
   "include": [
     "packages/*/src/**/*.ts",
-    "packages/**/__tests__/**/*.ts"
   ]
 }

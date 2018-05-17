@@ -1,8 +1,34 @@
 {
   "name": "routekit-js",
-  "main": "dist/main/index.js",
-  "typings": "dist/typings/index.d.ts",
   "version": "0.5.0",
+  "main": "dist/main/index.js",
+  "module": "dist/module/index.js",
+  "es2016": "dist/es2016/index.js",
+  "typings": "dist/typings/index.d.ts",
+  "files": [
+    "dist",
+    "src",
+    "!src/**/__tests__",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "prepublishOnly": "npm run clean && npm run dist",
+    "clean": "rm -rf ./dist",
+    "dist": "npm run dist:main && npm run dist:module && npm run dist:es2016",
+    "dist:main": "../../node_modules/.bin/tsc -p ./tsconfig.build.main.json",
+    "dist:module": "../../node_modules/.bin/tsc -p ./tsconfig.build.module.json",
+    "dist:es2016": "../../node_modules/.bin/tsc -p ./tsconfig.build.es2016.json"
+  },
+  "peerDependencies": {
+    "routekit": "^0.4.0"
+  },
+  "dependencies": {
+    "incode": "^0.3.0"
+  },
+  "devDependencies": {
+    "routekit": "^0.4.1"
+  },
   "description": "RouteKit javascript (TypeScript) emitter",
   "license": "MIT",
   "author": {
@@ -24,29 +50,5 @@
   "bugs": {
     "url": "https://github.com/localvoid/routekit/issues"
   },
-  "github": "https://github.com/localvoid/routekit",
-  "files": [
-    "dist",
-    "src",
-    "README.md",
-    "LICENSE"
-  ],
-  "scripts": {
-    "prepublish": "npm run clean && npm run dist",
-    "clean": "rm -rf ./dist",
-    "dist": "npm run dist:main",
-    "dist:main": "../../node_modules/.bin/tsc -p ./tsconfig.build.main.json",
-    "lint": "../../node_modules/.bin/tslint --project ./tsconfig.json",
-    "test": "../../node_modules/.bin/jest",
-    "test:coverage": "../../node_modules/.bin/jest --coverage"
-  },
-  "peerDependencies": {
-    "routekit": "^0.4.0"
-  },
-  "dependencies": {
-    "incode": "^0.3.0"
-  },
-  "devDependencies": {
-    "routekit": "^0.4.1"
-  }
+  "github": "https://github.com/localvoid/routekit"
 }

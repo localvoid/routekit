@@ -1,21 +1,10 @@
 {
-  "extends": "../tsconfig.checks.json",
+  "extends": "./tsconfig.build.json",
   "compilerOptions": {
     "target": "es2016",
     "module": "commonjs",
-    "moduleResolution": "node",
     "outDir": "dist/main",
     "declarationDir": "dist/typings",
-    "declaration": true,
-    "sourceMap": true,
-    "importHelpers": true,
-    "noEmitHelpers": true,
-    "removeComments": false,
-    "types": [
-      "node"
-    ]
-  },
-  "include": [
-    "src/**/*.ts"
-  ]
+    "declaration": true
+  }
 }
