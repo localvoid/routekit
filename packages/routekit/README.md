@@ -1,4 +1,12 @@
-[RouteKit](https://github.com/localvoid/routekit) is a set of tools for generating lightweight and efficient routers.
+# [RouteKit](https://github.com/localvoid/routekit) &middot; [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/localvoid/routekit/blob/master/LICENSE) [![codecov](https://codecov.io/gh/localvoid/routekit/branch/master/graph/badge.svg)](https://codecov.io/gh/localvoid/routekit) [![CircleCI Status](https://circleci.com/gh/localvoid/routekit.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/localvoid/routekit) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/localvoid/routekit)
+
+RouteKit is a set of tools for generating lightweight and efficient routers.
+
+|packages         |NPM version                                                                                                          |
+|-----------------|---------------------------------------------------------------------------------------------------------------------|
+|routekit         |[![npm version](https://img.shields.io/npm/v/routekit.svg)](https://www.npmjs.com/package/routekit)                  |
+|routekit-js      |[![npm version](https://img.shields.io/npm/v/routekit-js.svg)](https://www.npmjs.com/package/routekit-js)            |
+|routekit-resolver|[![npm version](https://img.shields.io/npm/v/routekit-resolver.svg)](https://www.npmjs.com/package/routekit-resolver)|
 
 ## Installation
 
@@ -32,7 +40,7 @@ process.stdout.write(emitRoutes(routes));
 Run `routes.build.js` file
 
 ```sh
-$ node routes.build.js
+$ node routes.build.js > routes.js
 ```
 
 And it will generate `routes.js` file with a compact flattened radix trie.

@@ -1,4 +1,6 @@
-Basic [RouteKit](https://github.com/localvoid/routekit) resolver for browser environments.
+# routekit-resolver
+
+[RouteKit](https://github.com/localvoid/routekit) resolver for browser environments.
 
 ## Installation
 
