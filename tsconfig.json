@@ -17,9 +17,6 @@
       "routekit": [
         "packages/routekit/src"
       ],
-      "routekit-js": [
-        "packages/routekit-js/src"
-      ],
       "routekit-resolver": [
         "packages/routekit-resolver/src"
       ]

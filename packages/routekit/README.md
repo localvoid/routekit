@@ -30,9 +30,9 @@ function r(name, path, data) {
   routes.add(name, path, routekit.HttpMethod.GET, JSON.stringify(data));
 }
 
-r("userView", "/user/:id", "user/view");
-r("userEdit", "/user/:id/edit", "user/edit");
-r("home", "/", "home");
+r("/user/:id", "user/view");
+r("/user/:id/edit", "user/edit");
+r("/", "home");
 
 process.stdout.write(emitRoutes(routes));
 ```
@@ -46,11 +46,18 @@ $ node routes.build.js > routes.js
 And it will generate `routes.js` file with a compact flattened radix trie.
 
 ```js
+const a = () => null;
+const b = (p) => ({ id: p[0] });
+
 export const ROUTES = {
   f: [43, 50, 41, 27],
   p: ["user/", "/edit"],
   d: ["home", "user/view", "user/edit"],
 };
+
+export const enum Params {
+  UserID = 0,
+}
 ```
 
 ## Tools

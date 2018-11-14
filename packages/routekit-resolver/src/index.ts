@@ -1,9 +1,7 @@
 export const enum RouteNodeFlags {
-  Match = 1,
+  Endpoint = 1,
   Static = 1 << 1,
-  CatchAll = 1 << 2,
-  HasValue = 1 << 3,
-  NotSlash = 1 << 4,
+  NotSlash = 1 << 2,
 }
 
 /**
@@ -21,53 +19,56 @@ export interface RouteMap<T> {
    */
   readonly p: string[];
   /**
-   * Node data.
+   * Node state.
    */
-  readonly d: T[];
+  readonly s: T[];
+}
+
+export interface ResolveResult<T> {
+  readonly state: T;
+  readonly vars: string[];
 }
 
 interface NodeCursor {
-  flagIndex: number;
-  pathIndex: number;
-  valueIndex: number;
+  f: number;
+  p: number;
+  s: number;
 }
 
 function skipNode<T>(map: RouteMap<T>, cursor: NodeCursor): void {
-  const flags = map.f[cursor.flagIndex++];
+  const flags = map.f[cursor.f++];
   const childrenLength = flags >> 5;
   if (
     (flags & (RouteNodeFlags.Static | RouteNodeFlags.NotSlash)) === (RouteNodeFlags.Static | RouteNodeFlags.NotSlash)
   ) {
-    cursor.pathIndex++;
+    cursor.p++;
   }
-  if (flags & RouteNodeFlags.HasValue) {
-    cursor.valueIndex++;
+  if (flags & RouteNodeFlags.Endpoint) {
+    cursor.s++;
   }
   for (let i = 0; i < childrenLength; i++) {
     skipNode(map, cursor);
   }
 }
 
-function visitNode<A, T>(
+function visitNode<T>(
   map: RouteMap<T>,
-  reducer: (a: A, b: T) => A,
   cursor: NodeCursor,
   path: string,
-  data: A,
-  params: string[],
-): ResolveResult<A> | null {
-  const flags = map.f[cursor.flagIndex++];
+  vars: string[],
+): ResolveResult<T> | null {
+  const flags = map.f[cursor.f++];
   const childrenLength = flags >> 5;
   let match = false;
 
-  let nodeData: T | undefined;
-  if (flags & RouteNodeFlags.HasValue) {
-    nodeData = map.d[cursor.valueIndex++];
+  let state!: T;
+  if (flags & RouteNodeFlags.Endpoint) {
+    state = map.s[cursor.s++];
   }
 
   let i = 0;
   if (flags & RouteNodeFlags.Static) {
-    const staticPart = (flags & RouteNodeFlags.NotSlash) ? map.p[cursor.pathIndex++] : "/";
+    const staticPart = (flags & RouteNodeFlags.NotSlash) ? map.p[cursor.p++] : "/";
     const sl = staticPart.length;
     const pl = path.length;
     const max = Math.max(pl, sl);
@@ -81,40 +82,33 @@ function visitNode<A, T>(
     if (i === sl) {
       match = true;
     }
-  } else { // Param Node
-    // capture param value
+  } else { // Variable Node
+    // capture variable value
     while (i < path.length && path.charCodeAt(i) !== 47) { // 47 === "/"
       i++;
     }
 
-    // param shouldn't be an empty string
+    // variable shouldn't be an empty string
     if (i) {
       match = true;
-      params = [...params, path.slice(0, i)];
+      vars = vars.concat(path.slice(0, i));
     }
   }
 
   if (match) {
     path = path.slice(i);
-    if (nodeData !== void 0) {
-      data = reducer(data, nodeData);
-    }
 
     if (path) {
       for (i = 0; i < childrenLength; i++) {
-        const result = visitNode(map, reducer, cursor, path, data, params);
+        const result = visitNode(map, cursor, path, vars);
         if (result) {
           return result;
         }
       }
 
-      if (flags & RouteNodeFlags.CatchAll) {
-        return { data, params: [...params, path] };
-      }
-
       return null;
-    } else if (flags & RouteNodeFlags.Match) {
-      return { data, params };
+    } else if (flags & RouteNodeFlags.Endpoint) {
+      return { state, vars };
     }
   }
 
@@ -125,16 +119,6 @@ function visitNode<A, T>(
   return null;
 }
 
-export interface ResolveResult<T> {
-  readonly data: T;
-  readonly params: string[];
-}
-
-export function resolve<A, T>(
-  map: RouteMap<T>,
-  reducer: (a: A, b: T) => A,
-  path: string,
-  data: A,
-): ResolveResult<A> | null {
-  return visitNode(map, reducer, { flagIndex: 0, pathIndex: 0, valueIndex: 0 }, path, data, []);
+export function resolve<T>(map: RouteMap<T>, path: string): ResolveResult<T> | null {
+  return visitNode(map, { f: 0, p: 0, s: 0 }, path, []);
 }

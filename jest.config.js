@@ -4,12 +4,11 @@ module.exports = {
   browser: false,
   globals: {
     "ts-jest": {
-      "tsConfigFile": "tsconfig.json",
+      "tsConfig": "tsconfig.json",
     },
   },
   moduleNameMapper: {
     "routekit": "<rootDir>/packages/routekit/src/",
-    "routekit-js": "<rootDir>/packages/routekit-js/src/",
     "routekit-resolver": "<rootDir>/packages/routekit-resolver/src/",
   },
   transform: {

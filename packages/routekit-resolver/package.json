@@ -1,9 +1,8 @@
 {
   "name": "routekit-resolver",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "main": "dist/main/index.js",
   "module": "dist/module/index.js",
-  "es2016": "dist/es2016/index.js",
   "typings": "dist/typings/index.d.ts",
   "files": [
     "dist",
@@ -15,12 +14,11 @@
   "scripts": {
     "prepublishOnly": "npm run clean && npm run dist",
     "clean": "rm -rf ./dist",
-    "dist": "npm run dist:main && npm run dist:module && npm run dist:es2016",
+    "dist": "npm run dist:main && npm run dist:module",
     "dist:main": "../../node_modules/.bin/tsc -p ./tsconfig.build.main.json",
-    "dist:module": "../../node_modules/.bin/tsc -p ./tsconfig.build.module.json",
-    "dist:es2016": "../../node_modules/.bin/tsc -p ./tsconfig.build.es2016.json"
+    "dist:module": "../../node_modules/.bin/tsc -p ./tsconfig.build.module.json"
   },
-  "description": "Basic RouteKit resolver for browser environments",
+  "description": "RouteKit resolver",
   "license": "MIT",
   "author": {
     "name": "Boris Kaul",

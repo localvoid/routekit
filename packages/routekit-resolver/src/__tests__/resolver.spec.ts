@@ -1,30 +1,16 @@
 import { resolve } from "../index";
 import { ROUTES } from "./data/routes";
 
-function noopMerge(a: any, b: any) {
-  return b;
-}
-
-function mergeLocations(a: any, b: any) {
-  return a.concat(b);
-}
-
 function notMatch(path: string) {
-  expect(resolve(ROUTES, noopMerge, path, {})).toBeNull();
+  expect(resolve(ROUTES, path)).toBeNull();
 }
 
 function match(path: string, location: string, params: string[] = []) {
-  const m = resolve(ROUTES, noopMerge, path, {});
+  const m = resolve(ROUTES, path);
   expect(m).not.toBeNull();
-  expect(m!.params!).toEqual(params);
-  expect(m!.data).toBe(location);
+  expect(m!.vars!).toEqual(params);
+  expect(m!.state).toBe(location);
   return m;
-}
-
-function matchAndMerge(path: string, location: string[]) {
-  const m = resolve(ROUTES, mergeLocations, path, ["start"]);
-  expect(m).not.toBeNull();
-  expect(m!.data! as string[]).toEqual(location);
 }
 
 describe("static", () => {
@@ -99,28 +85,6 @@ describe("param", () => {
   });
 });
 
-describe("catchAll", () => {
-  test("should not match 1", () => {
-    notMatch("/catchAll");
-  });
-
-  test("should match 1", () => {
-    match("/catchAll/", "catchAll1", []);
-  });
-
-  test("should match 2", () => {
-    match("/catchAll/1", "catchAll1", ["1"]);
-  });
-
-  test("should match 3", () => {
-    match("/catchAll/123", "catchAll1", ["123"]);
-  });
-
-  test("should match 4", () => {
-    match("/catchAll/123/456", "catchAll1", ["123/456"]);
-  });
-});
-
 describe("mix", () => {
   test("should not match 1", () => {
     notMatch("/mix");
@@ -144,15 +108,5 @@ describe("mix", () => {
 
   test("should match 4", () => {
     match("/mix/static/1", "mix4", ["1"]);
-  });
-});
-
-describe("merge data", () => {
-  test("should merge static", () => {
-    matchAndMerge("/static/b", ["start", "home", "static1", "static2", "static4"]);
-  });
-
-  test("should merge param", () => {
-    matchAndMerge("/param/123/b", ["start", "home", "param1", "param2", "param3"]);
   });
 });
