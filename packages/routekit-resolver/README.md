@@ -14,7 +14,14 @@ npm install -D routekit-resolver
 
 ```js
 import { resolve } from "routekit-resolver";
-import { ROUTES } from "./routes";
+
+// routekit:emit("routes")
+const ROUTES = {
+  f: [35, 38, 33, 7],
+  p: ["user/", "/edit"],
+  s: [0, 1, 2],
+};
+// routekit:end
 
 const match = (path) => resolve(ROUTES, path);
 
