@@ -3,7 +3,7 @@ import { FlatTree, toFlat } from "./flat";
 import { createDirectiveMatcher, inject } from "incode";
 
 export function emitter<T>(name = "ROUTES") {
-  return (...routes: Route<T>[]) => `export const ${name} = ${emitFlatTree(toFlat(build(...routes)))};`;
+  return (...routes: Route<T>[]) => `const ${name} = ${emitFlatTree(toFlat(build(...routes)))};`;
 }
 
 export function injector<T>(src: string) {
