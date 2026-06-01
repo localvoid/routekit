@@ -1,8 +1,6 @@
 {
   "compilerOptions": {
-    "rootDir": "${configDir}/src",
-    "outDir": "${configDir}/dist",
-    "declarationDir": "${configDir}/dist",
+    "noEmit": true,
     "target": "esnext",
     "module": "nodenext",
     "moduleResolution": "nodenext",
@@ -19,5 +17,5 @@
     "noUnusedLocals": true,
     "skipLibCheck": true
   },
-  "include": ["${configDir}/src/**/*.ts"]
+  "include": ["**/*.ts"]
 }
