@@ -2,9 +2,7 @@
   "name": "routekit",
   "version": "0.6.0",
   "description": "Routing library",
-  "keywords": [
-    "css"
-  ],
+  "keywords": [],
   "homepage": "https://github.com/localvoid/routekit",
   "bugs": "https://github.com/localvoid/routekit/issues",
   "license": "(MIT OR Apache-2.0)",
