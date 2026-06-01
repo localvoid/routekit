@@ -1,0 +1,55 @@
+name: Release
+on:
+  workflow_dispatch:
+    inputs:
+      increment:
+        type: choice
+        required: true
+        description: Increment version
+        options:
+          - ignore
+          - patch
+          - minor
+          - major
+
+permissions:
+  contents: write
+  id-token: write
+
+env:
+  ACTION_CACHE_PATH: |
+    ~/.bun/install/cache
+    node_modules/
+
+jobs:
+  release:
+    name: Release (${{ github.event.inputs.increment }})
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - uses: oven-sh/setup-bun@v2
+      - uses: actions/cache@v5
+        with:
+          path: ${{ env.ACTION_CACHE_PATH }}
+          key: ${{ runner.os }}
+      - run: bun install
+      - run: bun run build
+      - run: bun run test
+      - name: Increment versions and push changes
+        if: ${{ github.event.inputs.increment != 'ignore' }}
+        run: |
+          bun pm version "${{ github.event.inputs.increment }}" --no-git-tag-version
+          NEW_VERSION="$(jq -r .version package.json)"
+          bun install
+          git config --global user.name "GitHub Action"
+          git config --global user.email "username@users.noreply.github.com"
+          git commit -a -m "publish: ${NEW_VERSION}"
+          git push
+      - name: Publish to NPM
+        run: |
+          npm config set provenance true
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+          ./scripts/publish.sh --provenance

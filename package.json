@@ -1,31 +1,43 @@
 {
-  "private": true,
-  "version": "0.5.0",
-  "workspaces": [
-    "packages/*"
+  "name": "routekit",
+  "version": "0.6.0",
+  "description": "Routing library",
+  "keywords": [
+    "css"
   ],
-  "scripts": {
-    "lint": "tslint --format codeFrame --project ./tsconfig.json",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:debug": "node --inspect-brk ./node_modules/.bin/jest --runInBand",
-    "test:coverage": "jest --coverage"
+  "homepage": "https://github.com/localvoid/routekit",
+  "bugs": "https://github.com/localvoid/routekit/issues",
+  "license": "(MIT OR Apache-2.0)",
+  "author": "Boris Kaul <localvoid@gmail.com> (https://github.com/localvoid)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/localvoid/routekit.git"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "yarn lint && yarn test"
-    }
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./dist/index.js",
+    "./emit": "./dist/emit.js"
+  },
+  "scripts": {
+    "build": "tsc --project ./tsconfig.build.json",
+    "format": "oxfmt",
+    "check": "oxlint",
+    "test": "bun test tests/",
+    "clean": "rm -rf tsconfig.tsbuildinfo ./dist ./node_modules"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.9",
-    "@types/node": "^10.12.6",
-    "codecov": "^3.1.0",
-    "husky": "^1.1.4",
-    "ivi-tslint-rules": "^0.1.5",
-    "jest": "^23.6.0",
-    "ts-jest": "^23.10.4",
-    "ts-node": "^7.0.1",
-    "tslint": "^5.11.0",
-    "typescript": "^3.1.6"
+    "@types/bun": "^1.3.14",
+    "@types/node": "^25.9.1",
+    "oxfmt": "0.52.0",
+    "oxlint": "1.67.0",
+    "oxlint-tsgolint": "0.23.0",
+    "typescript": "^6.0.3"
   }
 }

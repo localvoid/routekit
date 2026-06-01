@@ -1,0 +1,46 @@
+name: CI
+on:
+  push:
+    paths:
+      - packages/**
+      - tests/**
+      - bun.lock
+    branches:
+      - main
+  pull_request:
+    paths:
+      - packages/**
+      - tests/**
+      - bun.lock
+    branches:
+      - main
+
+permissions:
+  contents: write
+  id-token: write
+
+env:
+  ACTION_CACHE_PATH: |
+    ~/.bun/install/cache
+    node_modules/
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - uses: oven-sh/setup-bun@v2
+      - uses: actions/cache@v5
+        with:
+          path: ${{ env.ACTION_CACHE_PATH }}
+          key: ${{ runner.os }}
+      - run: bun install
+      - run: bun run build
+      - run: bun run test

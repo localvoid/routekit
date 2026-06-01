@@ -1,28 +1,21 @@
 {
-  "extends": "./tools/typescript/tsconfig.checks.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "target": "es2016",
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "lib": [
-      "es2015",
-      "es2016"
-    ],
-    "types": [
-      "node",
-      "jest"
-    ],
-    "paths": {
-      "routekit": [
-        "packages/routekit/src"
-      ],
-      "routekit-resolver": [
-        "packages/routekit-resolver/src"
-      ]
-    }
+    "noEmit": true,
+    "target": "esnext",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "moduleDetection": "force",
+    "lib": ["ES2024"],
+    "types": ["node", "bun"],
+    "isolatedModules": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "importHelpers": true,
+    "noEmitHelpers": true,
+    "noImplicitOverride": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true
   },
-  "include": [
-    "packages/*/src/**/*.ts",
-  ]
+  "include": ["${configDir}/src/**/*.ts", "${configDir}/tests/**/*.ts"]
 }
