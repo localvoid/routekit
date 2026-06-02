@@ -2,14 +2,14 @@ name: CI
 on:
   push:
     paths:
-      - packages/**
+      - src/**
       - tests/**
       - bun.lock
     branches:
       - main
   pull_request:
     paths:
-      - packages/**
+      - src/**
       - tests/**
       - bun.lock
     branches:
