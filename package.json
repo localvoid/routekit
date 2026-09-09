@@ -31,7 +31,7 @@
     "clean": "rm -rf tsconfig.tsbuildinfo ./dist ./node_modules"
   },
   "devDependencies": {
-    "@types/bun": "^1.4.0",
+    "@types/bun": "^1.4.1",
     "@types/node": "^26.4.1",
     "oxfmt": "0.66.0",
     "oxlint": "1.81.0",
